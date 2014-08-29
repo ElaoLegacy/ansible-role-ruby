@@ -1,0 +1,31 @@
+---
+
+- name: packages pinning
+  template: >
+    src=pinning.j2
+    dest=/etc/apt/preferences.d/ruby
+  sudo: yes
+
+- name: repositories key
+  apt_key: >
+    url=http://deb.bearstech.com/bearstech-archive.gpg
+    state=present
+  sudo: yes
+
+- name: repositories
+  apt_repository: >
+    repo="{{ item }}"
+    state=present
+    update_cache=yes
+  with_items:
+    - deb http://deb.bearstech.com/debian {{ ansible_lsb.codename }}-bearstech main
+  sudo: yes
+
+- name: packages
+  apt: >
+    pkg={{ item }}
+    state=latest
+    default_release=wheezy-bearstech
+  with_items:
+    - ruby
+  sudo: yes
