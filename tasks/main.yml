@@ -23,9 +23,8 @@
 
 - name: packages
   apt: >
-    pkg={{ item }}
+    name={{ item }}
     state=latest
-    default_release=wheezy-bearstech
   with_items:
     - ruby
   sudo: yes
